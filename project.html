@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KYC Verification</title>
+
+<style>
+    /* -------------------- Global Styles -------------------- */
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #dbeafe, #f1f5f9);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+    }
+
+    /* -------------------- Glassmorphism Card -------------------- */
+    .card {
+        width: 100%;
+        max-width: 500px;
+        padding: 30px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.35);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-size: 28px;
+        color: #1a2b4c;
+        font-weight: bold;
+        animation: slideDown 0.7s ease;
+    }
+
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* -------------------- Progress Bar -------------------- */
+    .progress-container {
+        width: 100%;
+        background: rgba(255,255,255,0.4);
+        height: 8px;
+        border-radius: 5px;
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 100%;
+        background: #3b82f6;
+        animation: growBar 1.2s ease;
+    }
+
+    @keyframes growBar {
+        from { width: 0; }
+        to { width: 100%; }
+    }
+
+    /* -------------------- Form Styles -------------------- */
+    .section-title {
+        font-size: 18px;
+        margin: 20px 0 10px;
+        color: #1f2937;
+        font-weight: bold;
+        animation: fadeIn 0.8s ease;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+        color: #374151;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.6);
+        font-size: 14px;
+        background: rgba(255,255,255,0.55);
+        transition: 0.25s ease;
+        animation: fadeIn 0.8s ease;
+    }
+
+    input:hover, textarea:hover, select:hover {
+        border-color: #93c5fd;
+        background: rgba(255,255,255,0.75);
+    }
+
+    input:focus, textarea:focus, select:focus {
+        border-color: #3b82f6;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
+        background: rgba(255,255,255,0.95);
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    /* -------------------- Smooth Dropdown -------------------- */
+    select {
+        appearance: none;
+        background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5.516 7.548l4.484 4.484 4.484-4.484L16 8.548l-6 6-6-6z'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
+    }
+
+    /* -------------------- Face Recognition Box -------------------- */
+    .face-box {
+        width: 100%;
+        height: 220px;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.35);
+        border: 1px dashed rgba(255,255,255,0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #475569;
+        font-size: 14px;
+        margin-bottom: 15px;
+        animation: fadeIn 1s ease;
+    }
+
+    .scan-btn {
+        width: 100%;
+        padding: 14px;
+        background: #0ea5e9;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.25s ease;
+        margin-bottom: 10px;
+    }
+
+    .scan-btn:hover {
+        background: #0284c7;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(14,165,233,0.3);
+    }
+
+    .face-status {
+        text-align: center;
+        font-size: 14px;
+        color: #334155;
+        opacity: 0.8;
+        margin-bottom: 20px;
+    }
+
+    /* -------------------- Submit Button -------------------- */
+    .btn-submit {
+        width: 100%;
+        padding: 14px;
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.25s ease;
+        margin-top: 10px;
+        animation: fadeIn 1s ease;
+    }
+
+    .btn-submit:hover {
+        background: #1e4fcf;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(37,99,235,0.3);
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar"></div>
+    </div>
+
+    <h1>KYC Verification</h1>
+
+    <form>
+
+        <!-- -------------------- Personal Information -------------------- -->
+        <div class="section-title">Personal Information</div>
+
+        <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" placeholder="John Doe" required>
+        </div>
+
+        <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" required>
+        </div>
+
+        <div class="form-group">
+            <label for="nationality">Nationality</label>
+            <select id="nationality" required>
+                <option>United States</option>
+                <option>United Kingdom</option>
+                <option>Saudi Arabia</option>
+                <option>Japan</option>
+                <option>Iraq</option>
+                <option>Syria</option>
+                <option>Iran</option>
+                <option>India</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" required>
+                <option value="">Select gender</option>
+                <option>Male</option>
+                <option>Female</option>
+            </select>
+        </div>
+
+        <!-- -------------------- Contact Information -------------------- -->
+        <div class="section-title">Contact Information</div>
+
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="you@example.com" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="+1 234 567 890" required>
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address</label>
+            <textarea id="address" placeholder="Street, City, Country" required></textarea>
+        </div>
+
+        <!-- -------------------- Identity Verification -------------------- -->
+        <div class="section-title">Identity Verification</div>
+
+        <div class="form-group">
+            <label for="idtype">ID Type</label>
+            <select id="idtype" required>
+                <option value="">Select ID type</option>
+                <option>Passport</option>
+                <option>National ID</option>
+                <option>Driver License</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="idnumber">ID Number</label>
+            <input type="text" id="idnumber" placeholder="ID123456789" required>
+        </div>
+
+        <div class="form-group">
+            <label for="iddoc">Upload ID Document</label>
+            <input type="file" id="iddoc" required>
+        </div>
+
+        <div class="form-group">
+            <label for="selfie">Upload Selfie</label>
+            <input type="file" id="selfie" required>
+        </div>
+
+        <!-- -------------------- Face Recognition Section -------------------- -->
+        <div class="section-title">Face Recognition</div>
+
+        <div class="face-box">
+            Face preview will appear here
+        </div>
+
+        <button type="button" class="scan-btn">Scan Face</button>
+
+        <div class="face-status">
+            Waiting for face scan...
+        </div>
+
+        <button class="btn-submit" type="submit">Submit</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
