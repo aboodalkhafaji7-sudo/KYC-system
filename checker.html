@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC Checker Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #dbeafe, #f1f5f9);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 28px;
+            color: #1a2b4c;
+            font-weight: bold;
+            animation: slideDown 0.7s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 18px;
+            margin: 20px 0 10px;
+            color: #1f2937;
+            font-weight: bold;
+        }
+
+        .application-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .application-item {
+            background: rgba(255,255,255,0.5);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .application-info {
+            flex-grow: 1;
+        }
+
+        .application-info h3 {
+            margin: 0 0 5px 0;
+            color: #1a2b4c;
+        }
+
+        .application-info p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-verify, .btn-reject {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .btn-verify {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-verify:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-reject {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.5);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .stat-card h2 {
+            margin: 0;
+            color: #1a2b4c;
+        }
+
+        .stat-card p {
+            margin: 5px 0 0 0;
+            color: #6b7280;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255,255,255,0.5);
+            border: none;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .tab.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .tab:hover {
+            background: rgba(59,130,246,0.8);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>KYC Checker Dashboard</h1>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h2>8</h2>
+                <p>Awaiting Verification</p>
+            </div>
+            <div class="stat-card">
+                <h2>15</h2>
+                <p>Verified Today</p>
+            </div>
+            <div class="stat-card">
+                <h2>1</h2>
+                <p>Rejected Today</p>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active">Pending Verification</button>
+            <button class="tab">Verified</button>
+            <button class="tab">Rejected</button>
+        </div>
+
+        <div class="section-title">Applications Awaiting Verification</div>
+        <ul class="application-list" id="pending-list">
+            <li class="application-item">
+                <div class="application-info">
+                    <h3>John Doe</h3>
+                    <p>Approved by Maker: 2026-04-21 | Status: Awaiting Verification</p>
+                    <div class="details" style="display: none;">
+                        <p><strong>Full Name:</strong> John Doe</p>
+                        <p><strong>Email:</strong> john.doe@example.com</p>
+                        <p><strong>ID Type:</strong> Passport</p>
+                        <p><strong>ID Number:</strong> P123456789</p>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-verify" onclick="verifyApplication(this)">Verify</button>
+                    <button class="btn-reject" onclick="rejectApplication(this)">Reject</button>
+                </div>
+            </li>
+            <li class="application-item">
+                <div class="application-info">
+                    <h3>Jane Smith</h3>
+                    <p>Approved by Maker: 2026-04-20 | Status: Awaiting Verification</p>
+                    <div class="details" style="display: none;">
+                        <p><strong>Full Name:</strong> Jane Smith</p>
+                        <p><strong>Email:</strong> jane.smith@example.com</p>
+                        <p><strong>ID Type:</strong> National ID</p>
+                        <p><strong>ID Number:</strong> N987654321</p>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-verify" onclick="verifyApplication(this)">Verify</button>
+                    <button class="btn-reject" onclick="rejectApplication(this)">Reject</button>
+                </div>
+            </li>
+            <li class="application-item">
+                <div class="application-info">
+                    <h3>Mike Johnson</h3>
+                    <p>Approved by Maker: 2026-04-19 | Status: Awaiting Verification</p>
+                    <div class="details" style="display: none;">
+                        <p><strong>Full Name:</strong> Mike Johnson</p>
+                        <p><strong>Email:</strong> mike.johnson@example.com</p>
+                        <p><strong>ID Type:</strong> Driver License</p>
+                        <p><strong>ID Number:</strong> D456789123</p>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-verify" onclick="verifyApplication(this)">Verify</button>
+                    <button class="btn-reject" onclick="rejectApplication(this)">Reject</button>
+                </div>
+            </li>
+        </ul>
+
+        <div class="section-title" id="verified-title" style="display: none;">Verified Applications</div>
+        <ul class="application-list" id="verified-list" style="display: none;">
+        </ul>
+
+        <div class="section-title" id="rejected-title" style="display: none;">Rejected Applications</div>
+        <ul class="application-list" id="rejected-list" style="display: none;">
+        </ul>
+    </div>
+
+    <script>
+        function updateStats() {
+            const pendingCount = document.getElementById('pending-list').children.length;
+            const verifiedCount = document.getElementById('verified-list').children.length;
+            const rejectedCount = document.getElementById('rejected-list').children.length;
+
+            document.querySelector('.stat-card:nth-child(1) h2').textContent = pendingCount;
+            document.querySelector('.stat-card:nth-child(2) h2').textContent = verifiedCount;
+            document.querySelector('.stat-card:nth-child(3) h2').textContent = rejectedCount;
+        }
+
+        const tabs = document.querySelectorAll('.tab');
+        const lists = {
+            'Pending Verification': document.getElementById('pending-list'),
+            'Verified': document.getElementById('verified-list'),
+            'Rejected': document.getElementById('rejected-list')
+        };
+        const titles = {
+            'Pending Verification': document.querySelector('.section-title'),
+            'Verified': document.getElementById('verified-title'),
+            'Rejected': document.getElementById('rejected-title')
+        };
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                Object.values(lists).forEach(list => list.style.display = 'none');
+                Object.values(titles).forEach(title => title.style.display = 'none');
+                
+                const tabText = tab.textContent;
+                lists[tabText].style.display = 'block';
+                titles[tabText].style.display = 'block';
+            });
+        });
+
+        function verifyApplication(button) {
+            moveApplication(button, 'verified-list');
+        }
+
+        function rejectApplication(button) {
+            moveApplication(button, 'rejected-list');
+        }
+
+        function moveApplication(button, targetListId) {
+            const item = button.closest('.application-item');
+            const targetList = document.getElementById(targetListId);
+            targetList.appendChild(item);
+            
+            // Hide buttons after action
+            item.querySelector('.btn-group').style.display = 'none';
+            
+            // Update stats
+            updateStats();
+        }
+
+        // Add click to show details
+        document.querySelectorAll('.application-info h3').forEach(h3 => {
+            h3.addEventListener('click', () => {
+                const details = h3.parentElement.querySelector('.details');
+                details.style.display = details.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+
+        // Initialize stats
+        updateStats();
+    </script>
+</body>
+</html>
